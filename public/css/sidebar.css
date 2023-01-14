@@ -1,0 +1,168 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+body{
+    background-color: #f1ebeb;
+}
+/* Top Header */
+.header{
+    background-color: #fff;
+    align-items: center;
+}
+.wlc_admin{
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+.wlc_admin .wadropbtn{
+    text-align: center;
+    border: none;
+    padding-bottom: 3px;
+    background-color: #fff;
+}
+.wlc_admin .wadropdown-content{
+    display: none;
+    position: absolute;
+    z-index: 3;
+    bottom: -84px;
+    right: 0;
+    background-color: #fff;
+    padding: 10px;
+}
+.wadropbtn:hover ~ .wadropdown-content{
+    display: block;
+}
+.wadropdown-content:hover{
+    display: block;
+}
+#searchform{
+    display: flex;
+}
+#search {
+    width: 80%;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+    padding: 0 20px;
+}
+#btnsearch {
+    border: 1px solid #ced4da;
+    background: #fff;
+    padding: 0 15px 0 10px;
+    margin-left: -1px;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+}
+/* /Top Header */
+#main {
+    display: flex;
+}
+
+#sidebar {
+    min-height: calc(100vh - 58px);
+    width: 250px;
+    position: relative;
+    background-color: #fff;
+}
+
+#sidebar.hide {
+    width: 40px;
+}
+
+#content {
+    width: calc(100% - 250px);
+    padding: 0 2rem;
+}
+#content.lg {
+    width: calc(100% - 40px);            
+}
+
+/* Side Bar Styling */
+#sbmenu button,
+#sbmenu a {
+    display: block;
+    color: #333;
+    padding: 10px 20px;
+    text-decoration: none;
+    transition: 0.5s;
+}
+
+#sbmenu button:hover,
+#sbmenu a:hover {
+    background-color: tomato;
+}
+
+#sidebar.hide #sbmenu button,
+#sidebar.hide #sbmenu a {
+    padding: 10px;
+}
+
+#sbmenu a span {
+    margin: 0 5px 0 10px;
+}
+
+#sidebar.hide #sbmenu button span,
+#sidebar.hide #sbmenu a span {
+    display: none;
+}
+.menu_dropd_btn {
+    border: none;
+    background: none;
+    padding: 10px 20px;
+    display: block;
+    width: 100%;
+    text-align: left;
+}
+.menu_dropd_content {
+    display: none;
+    background-color: #f39c8c;
+    margin-left: 20px;
+}
+#sidebar.hide .menu_dropd_content {
+    margin-left: 5px;
+}
+.menu_dropd_btn:hover ~ .menu_dropd_content {
+    display: block;
+}
+.menu_dropd_content:hover {
+    display: block;
+}
+.menu_dropd_content ul li{
+    list-style: none;
+}
+#sidebar #slide-nav {
+    display: block;
+    justify-content: center;
+    width: 100%;
+    height: 40px;
+    font-size: 20px;
+    border: 0;
+    margin-bottom: 0;
+    cursor: pointer;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    background-color: #e1dce7;
+    outline: none;
+}
+
+#sidebar #slide-nav i {
+    display: block;
+    transition: 0.5s;
+}
+
+#sidebar.hide #slide-nav i {
+    transform: rotate(180deg);
+}
+/* /Side Bar Styling */
+/* Dashboard Designing */
+#overview{
+    display: flex;
+    flex-wrap: wrap;
+}
+#overview .ovitem{
+    padding: 20px;
+    text-align: center;
+    margin-top: 10px;
+}
+/* /Dashboard Designing */
