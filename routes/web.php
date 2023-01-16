@@ -23,7 +23,7 @@ use App\Http\Controllers\PermissionController;
 
 Route::group(['middleware' => ['protectPage']], function () {
     Route::get('home', [HomeController::class, 'dashboard']);
-    Route::get('', [HomeController::class, 'dashboard']);
+    Route::get('/', [HomeController::class, 'dashboard']);
     Route::view("searchres","admin/searchres");
     Route::post("categories",[CategoryController::class, 'store']);
     Route::post("results",[FileController::class, 'search_results']);
@@ -37,38 +37,21 @@ Route::group(['middleware' => ['protectPage']], function () {
     Route::get("editscat/{id}",[ScategoryController::class, 'scatdetails']);
     Route::get("sub-category",[ScategoryController::class, 'sctselect']);
     Route::post("upscat",[ScategoryController::class, 'upscat']);
-    Route::get("selctg",[SelctgController::class, 'allctg']);
-    Route::get("selsctg/{mctgid}",[SelsctgController::class, 'afgllctg']);
+    Route::get("selctg",[CategoryController::class, 'allctg']);
+    Route::get("selsctg/{mctgid}",[ScategoryController::class, 'afgllctg']);
     Route::view("selsctg","admin/category/selsctg");
     Route::get("file",[FileController::class, 'getfiles']);
     Route::get("file/{mcat}",[FileController::class, 'mcatfiles']);
     Route::get("file/{mcat}/{scat}",[FileController::class, 'scatfiles']);
-    Route::post("file/{mctgid}/{sctgid}",[FileController::class, 'addfile']);
     Route::get("filedetails/{fileid}",[FileController::class, 'filedetails']);
+    Route::get("edit-file/{fileid}",[FileController::class, 'fileDetailsToEdit']);
+    Route::post("update_file",[FileController::class, 'updateFile']);
     Route::get("download/{fileid}",[FileController::class, 'download']);
     Route::get("fileup",[FileController::class, 'getmcat']);
     Route::post("fileupload",[FileController::class, 'fileupload']);  
     Route::get('getmaincat/{id}', function ($id) {
         $sub_cat = App\Models\Scategorie::where('main_category',$id)->get();
         return response()->json($sub_cat);
-    });
-    Route::get('getfile/{mcat}', function ($mcat) {
-        if($mcat == 0){
-            $files = App\Models\File::all();
-            return response()->json($files);
-        }else if($mcat>0){
-            $files = App\Models\File::where('main_category',$mcat)->get();
-            return response()->json($files);
-        }
-    });
-    Route::get('filebysctg/{mcat}/{scat}', function ($mcat,$scat) { 
-        if($scat == 0){
-            $files = App\Models\File::all()->where('main_category',$mcat);
-            return response()->json($files);
-        }else if($scat > 0){
-            $files = App\Models\File::all()->where('main_category',$mcat) ->where('sub_category',$scat);
-            return response()->json($files);
-        } 
     });
     Route::get("admins",[AdminsController::class, 'getAdmins']);
     Route::get("change_admin/{id}",[AdminsController::class, 'adminDetails']);
@@ -87,7 +70,6 @@ Route::get('/', function () {
     }
 });
 Route::get('logout', function () {
-    // session()->pull('logedadmin');
     Session::flush();
     return redirect('');
 });

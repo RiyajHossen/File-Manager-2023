@@ -104,7 +104,7 @@ class CategoryController extends Controller
                 return redirect::back();
             }            
         }else if(Session('logedadminrole')==2 or Session('logedadminrole')==3){
-            if(Session('permissions')['file_add']==1){
+            if(Session('permissions')['cat_edit']==1){
                 if(DB::table('categories')
                 ->where('id', $req->catid)
                 ->update(['name' => $req->ctnm, 'description'=>$req->ctdesc]))

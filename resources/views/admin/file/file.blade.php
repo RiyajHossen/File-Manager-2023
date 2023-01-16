@@ -66,13 +66,13 @@
                             @foreach ($files as $file)
                                 <tr>
                                     <td scope="col">{{ $count++ }}</td>
-                                    <td scope="col"><a href="{{ url('filedetails/'.$file['id']) }}">
+                                    <td scope="col"><a href="{{ url('filedetails/'.$file->id) }}">
                                         <img src="@php echo asset('img/'.pathinfo($file->originalName, PATHINFO_EXTENSION).'.png') @endphp" alt="?" width="30px" /> {{ $file->name }}</a>
                                     </td>
-                                    <td scope="col">{{ $file['created_at'] }}</td>
+                                    <td scope="col">{{ $file->created_at }}</td>
                                     <td scope="col">{{ $file->uploaded_by }}</td>
-                                    <td scope="col"><a href="file/edit-file/{{ $file->id }}">Edit</a> <a
-                                            href="file/delete/{{ $file['id'] }}">Delete</a></td>
+                                    <td scope="col"><a href="{{url('edit-file/'.$file->id) }}">Edit</a> <a
+                                            href="file/delete/{{ $file->id }}">Delete</a></td>
                                 </tr>
                             @endforeach
                         </tbody>

@@ -30,10 +30,10 @@ class FileController extends Controller
         $allcat=Categorie::all();
         return view('admin/file/file', ['perPage'=>$perPage, 'files'=>$data, 'mcats'=>$allcat]);             
     }
-
     public function mcatfiles($mcat)
     {        
-        $files = DB::table('files')->where('main_category', $mcat)->paginate(10);
+        $perPage = 10;
+        $files = DB::table('files')->where('main_category', $mcat)->paginate($perPage);
         $allcat=Categorie::all();
         $allscat=Scategorie::all()->where('main_category', $mcat);
         return view('admin/file/file', ['files'=>$files, 'mcats'=>$allcat, 'scats'=>$allscat, 'mcat'=>$mcat]);         
@@ -46,6 +46,21 @@ class FileController extends Controller
         $allscat=Scategorie::all()->where('main_category', $mcat);
         return view('admin/file/file', ['files'=>$files, 'mcats'=>$allcat, 'scats'=>$allscat, 'mcat'=>$mcat, 'scat'=>$scat]);      
         
+    }
+    public function fileDetailsToEdit($fileid)
+    {
+        $data = File::all()
+        ->where('id', $fileid);
+        foreach($data as $fdata){
+            $mcat=$fdata['main_category'];
+            $title=$fdata['name'];
+            $description=$fdata['description'];
+            $newnm=$fdata['newnm'];
+        }
+        
+        $allcat=Categorie::all();
+        $allscat=Scategorie::all()->where('main_category', $mcat);
+        return view('admin/file/edit-file', ['filedata'=>$data, 'mcat'=>$mcat,'mainctgs'=>$allcat, 'allscats'=>$allscat, 'title'=>$title, 'description'=>$description, 'newnm'=>$newnm, 'fileid'=>$fileid]);             
     }
     public function filedetails($fileid)
     {
@@ -122,7 +137,7 @@ class FileController extends Controller
             Session::flash('Success', 'File Added');
             return redirect::back();
         }else if(Session('logedadminrole')==2 or Session('logedadminrole')==3){
-            if(Session('permissions')['file_edit']==1){
+            if(Session('permissions')['file_add']==1){
                 $newnm = $request->file('selfile')->store("File/".$ctgnm."/".$sctgnm);
                 $file->newnm = $newnm;
                 $file->save();        
@@ -167,5 +182,36 @@ class FileController extends Controller
             }
         }
         
+    }
+    public function updateFile(Request $req)
+    {
+        if(Session('logedadminrole')==1){
+            if(DB::table('files')
+            ->where('id', $req->fileid)
+            ->update(['name' => $req->fnm, 'description'=>$req->filedet, 'main_category'=>$req->main_cat, 'sub_category'=>$req->sub_cat]))
+            {
+                Session::flash('success', 'File Details Updated');
+                return redirect::back();            
+            }else{
+                Session::flash('error', 'File Details Update Failed');
+                return redirect::back();
+            }            
+        }else if(Session('logedadminrole')==2 or Session('logedadminrole')==3){
+            if(Session('permissions')['cat_edit']==1){
+                if(DB::table('files')
+                ->where('id', $req->fileid)
+                ->update(['name' => $req->fnm, 'description'=>$req->filedet, 'main_category'=>$req->main_cat, 'sub_category'=>$req->sub_cat]))
+                {
+                    Session::flash('success', 'File Details Updated');
+                    return redirect::back();            
+                }else{
+                    Session::flash('error', 'File Details Update Failed');
+                    return redirect::back();
+                }                
+            }else{
+                Session::flash('error', 'Sorry! You are not allowed to perform this action.');
+                return redirect::back();
+            }
+        }
     }
 }
