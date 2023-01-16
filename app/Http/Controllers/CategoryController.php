@@ -6,6 +6,7 @@ use App\Models\categorie;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use Session;
 
 
 class CategoryController extends Controller
@@ -19,20 +20,25 @@ class CategoryController extends Controller
         if(Session('logedadminrole')==1){
             if($category->save())
             {
-                return redirect::back()->withScuccess("Categorie Added");
+                Session::flash('success', 'Categorie Added');
+                return redirect::back();
             }else{
-                return redirect::back()->withError("Categorie Not Add");
+                Session::flash('error', 'Categorie Not Add');
+                return redirect::back();
             }
         }else if(Session('logedadminrole')==2 or Session('logedadminrole')==3){
             if(Session('permissions')['cat_add']==1){
                 if($category->save())
                 {
-                    return redirect::back()->withScuccess("Categorie Added");
+                    Session::flash('success', 'Categorie Added');
+                    return redirect::back();
                 }else{
-                    return redirect::back()->withError("Categorie Not Add");
+                    Session::flash('error', 'Categorie Not Add');
+                    return redirect::back();
                 }                
             }else{
-                return redirect::back()->withError('Sorry! You are not allowed to perform this action.');
+                Session::flash('error', 'Sorry! You are not allowed to perform this action.');
+                return redirect::back();
             }
         }
     }
@@ -62,20 +68,25 @@ class CategoryController extends Controller
         if(Session('logedadminrole')==1){
             if($delitem->delete())
             {
-                return redirect::back()->withScuccess("Categorie Deleted");
+                Session::flash('success', 'Categorie Deleted');
+                return redirect::back();
             }else{
-                return redirect::back()->withError("Categorie Delete Failed");
+                Session::flash('error', 'Categorie Delete Failed');
+                return redirect::back();
             }            
         }else if(Session('logedadminrole')==2 or Session('logedadminrole')==3){
             if(Session('permissions')['file_delete']==1){                
                 if($delitem->delete())
                 {
-                    return redirect::back()->withScuccess("Categorie Deleted");
+                    Session::flash('success', 'Categorie Deleted');
+                    return redirect::back();
                 }else{
-                    return redirect::back()->withError("Categorie Delete Failed");
+                    Session::flash('error', 'Categorie Delete Failed');
+                    return redirect::back();
                 }
             }else{
-                return redirect::back()->withError('Sorry! You are not allowed to perform this action.');
+                Session::flash('error', 'Sorry! You are not allowed to perform this action.');
+                return redirect::back();
             }
         }
     }
@@ -86,9 +97,11 @@ class CategoryController extends Controller
             ->where('id', $req->catid)
             ->update(['name' => $req->ctnm, 'description'=>$req->ctdesc]))
             {
-                return redirect::back()->withScuccess("Categorie Updated");            
+                Session::flash('success', 'Categorie Updated');
+                return redirect::back();            
             }else{
-                return redirect::back()->withError("Categorie Update Failed");
+                Session::flash('error', 'Categorie Update Failed');
+                return redirect::back();
             }            
         }else if(Session('logedadminrole')==2 or Session('logedadminrole')==3){
             if(Session('permissions')['file_add']==1){
@@ -96,12 +109,15 @@ class CategoryController extends Controller
                 ->where('id', $req->catid)
                 ->update(['name' => $req->ctnm, 'description'=>$req->ctdesc]))
                 {
-                    return redirect::back()->withScuccess("Categorie Updated");            
+                    Session::flash('success', 'Categorie Updated');
+                    return redirect::back();            
                 }else{
-                    return redirect::back()->withError("Categorie Update Failed");
+                    Session::flash('error', 'Categorie Update Failed');
+                    return redirect::back();
                 }                
             }else{
-                return redirect::back()->withError('Sorry! You are not allowed to perform this action.');
+                Session::flash('error', 'Sorry! You are not allowed to perform this action.');
+                return redirect::back();
             }
         }
     }

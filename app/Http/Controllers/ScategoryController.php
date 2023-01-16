@@ -17,13 +17,29 @@ class ScategoryController extends Controller
         $scategory->name = $requset->sctnm;
         $scategory->description = $requset->sctdesc;
         $scategory->main_category = $requset->mact;
-        if($scategory->save()){
-            Session::flash('success', 'Sub Categorie Added');
-            return redirect::back();
-        }else{
-            Session::flash('error', 'Query Failed');
-            return redirect::back();
-        }
+        
+        if(Session('logedadminrole')==1){
+            if($scategory->save()){
+                Session::flash('success', 'Sub Categorie Added');
+                return redirect::back();
+            }else{
+                Session::flash('error', 'Query Failed');
+                return redirect::back();
+            }            
+        }else if(Session('logedadminrole')==2 or Session('logedadminrole')==3){
+            if(Session('permissions')['cat_add']==1){
+                if($scategory->save()){
+                    Session::flash('success', 'Sub Categorie Added');
+                    return redirect::back();
+                }else{
+                    Session::flash('error', 'Query Failed');
+                    return redirect::back();
+                }                               
+            }else{
+                Session::flash('error', 'Sorry! You are not allowed to perform this action.');
+                return redirect::back();
+            }
+        }        
     }
     public function sctselect()
     {
@@ -34,13 +50,29 @@ class ScategoryController extends Controller
     }
     public function delete($id)
     {
-        $delitem = Scategorie::find($id);
-        if($delitem->delete()){
-            Session::flash('success', 'Sub Categorie Deleted');
-            return redirect::back();
-        }else{
-            Session::flash('error', 'Delete Failed');
-            return redirect::back();
+        if(Session('logedadminrole')==1){
+            $delitem = Scategorie::find($id);
+            if($delitem->delete()){
+                Session::flash('success', 'Sub Categorie Deleted');
+                return redirect::back();
+            }else{
+                Session::flash('error', 'Delete Failed');
+                return redirect::back();
+            }            
+        }else if(Session('logedadminrole')==2 or Session('logedadminrole')==3){
+            if(Session('permissions')['cat_delete']==1){
+                $delitem = Scategorie::find($id);
+                if($delitem->delete()){
+                    Session::flash('success', 'Sub Categorie Deleted');
+                    return redirect::back();
+                }else{
+                    Session::flash('error', 'Delete Failed');
+                    return redirect::back();
+                }                               
+            }else{
+                Session::flash('error', 'Sorry! You are not allowed to perform this action.');
+                return redirect::back();
+            }
         }
     }
     public function scatdetails($id)
@@ -56,15 +88,33 @@ class ScategoryController extends Controller
     }
     public function upscat(Request $req)
     {
-        if(DB::table('scategories')
-        ->where('id', $req->scatid)
-        ->update(['name' => $req->sctnm, 'description'=>$req->sctdesc, 'main_category'=>$req->mact]))
-        {
-            Session::flash('success', 'Sub Categorie Information Updated');
-          return redirect::back();
-        }else{
-            Session::flash('error', 'Sub Categorie Information Update Failed');
-            return redirect::back();
+        if(Session('logedadminrole')==1){
+            if(DB::table('scategories')
+            ->where('id', $req->scatid)
+            ->update(['name' => $req->sctnm, 'description'=>$req->sctdesc, 'main_category'=>$req->mact]))
+            {
+                Session::flash('success', 'Sub Categorie Information Updated');
+              return redirect::back();
+            }else{            
+                Session::flash('error', 'Sub Categorie Information Update Failed');
+                return redirect::back();
+            }            
+        }else if(Session('logedadminrole')==2 or Session('logedadminrole')==3){
+            if(Session('permissions')['cat_edit']==1){
+                if(DB::table('scategories')
+                ->where('id', $req->scatid)
+                ->update(['name' => $req->sctnm, 'description'=>$req->sctdesc, 'main_category'=>$req->mact]))
+                {
+                    Session::flash('success', 'Sub Categorie Information Updated');
+                  return redirect::back();
+                }else{            
+                    Session::flash('error', 'Sub Categorie Information Update Failed');
+                    return redirect::back();
+                }                 
+            }else{
+                Session::flash('error', 'Sorry! You are not allowed to perform this action.');
+                return redirect::back();
+            }
         }
     }
     public function afgllctg($id)
@@ -73,4 +123,4 @@ class ScategoryController extends Controller
         ->where('main_category',$id);
         return view('admin/category/selsctg', ['subcategories'=>$data]);
     }
-}
+} 
