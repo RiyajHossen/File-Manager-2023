@@ -7,6 +7,7 @@ use App\Models\categorie;
 use App\Models\Scategorie;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use Session;
 
 class ScategoryController extends Controller
 {
@@ -17,9 +18,11 @@ class ScategoryController extends Controller
         $scategory->description = $requset->sctdesc;
         $scategory->main_category = $requset->mact;
         if($scategory->save()){
-            return redirect::back()->withScuccess("Sub Categorie Added");
+            Session::flash('success', 'Sub Categorie Added');
+            return redirect::back();
         }else{
-            return redirect::back()->withError("Query Failed");
+            Session::flash('error', 'Query Failed');
+            return redirect::back();
         }
     }
     public function sctselect()
@@ -33,9 +36,11 @@ class ScategoryController extends Controller
     {
         $delitem = Scategorie::find($id);
         if($delitem->delete()){
-            return redirect::back()->withScuccess("Sub Categorie Deleted");
+            Session::flash('success', 'Sub Categorie Deleted');
+            return redirect::back();
         }else{
-            return redirect::back()->withError("Delete Failed");
+            Session::flash('error', 'Delete Failed');
+            return redirect::back();
         }
     }
     public function scatdetails($id)
@@ -55,9 +60,17 @@ class ScategoryController extends Controller
         ->where('id', $req->scatid)
         ->update(['name' => $req->sctnm, 'description'=>$req->sctdesc, 'main_category'=>$req->mact]))
         {
-          return redirect::back()->withScuccess("Sub Categorie Information Updated");
+            Session::flash('success', 'Sub Categorie Information Updated');
+          return redirect::back();
         }else{
-            return redirect::back()->withError("Sub Categorie Information Update Failed");
+            Session::flash('error', 'Sub Categorie Information Update Failed');
+            return redirect::back();
         }
+    }
+    public function afgllctg($id)
+    {
+        $data = Scategorie::all()
+        ->where('main_category',$id);
+        return view('admin/category/selsctg', ['subcategories'=>$data]);
     }
 }

@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\file;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use Session;
 
 
 class FileController extends Controller
@@ -87,49 +88,14 @@ class FileController extends Controller
                 // echo "yes Can Download";
             }else{
                 // echo "No Can't Download";
-                return redirect::back()->withError('Sorry! You are not allowed to perform this action.');
+                Session::flash('error', 'Sorry! You are not allowed to perform this action.');
+                return redirect::back();
             }
         }
 
-    }
-    public function addfile(Request $requset)
-    {         
-        $file = new file;
-        $file->name = $requset->fnm;
-        $file->description = $requset->filedet;
-        $file->file = $requset->selfile;
-        $file->main_category = $requset->mainctg;
-        $file->sub_category = $requset->subctg;
-
-        if(Session('logedadminrole')==1){
-            $newnm = $requset->file('selfile')->store('img');
-            $file->newnm = $newnm;
-            $file->save();
-            return redirect::back()->withSuccess('File Uploaded');
-        }else if(Session('logedadminrole')==2 or Session('logedadminrole')==3){
-            if(Session('permissions')['file_add']==1){
-                $newnm = $requset->file('selfile')->store('img');
-                $file->newnm = $newnm;
-                $file->save();
-                return redirect::back()->withSuccess('File Uploaded');
-            }else{
-                return redirect::back()->withError('Sorry! You are not allowed to perform this action.');
-            }
-        }
-
-    }  
+    } 
     public function fileupload(Request $request)
     {
-        $category = Categorie::all()
-            ->where('id', $request->main_cat);
-        $scategory = scategorie::all()
-            ->where('id', $request->main_cat);
-        foreach($category as $ctg){
-            $ctgnm = $ctg['name']; 
-        }
-        foreach($scategory as $sctg){
-            $sctgnm = $sctg['name']; 
-        }
         $file = new file;
         $file->name = $request->fnm;
         $file->description = $request->filedet;
@@ -139,20 +105,32 @@ class FileController extends Controller
         $file->sub_category = $request->sub_cat;
         $file->originalName = $request->selfile->getClientOriginalName();
         $file->mimeType = $request->selfile->getClientMimeType();
-        return redirect('fileup');
+        $category = Categorie::all()
+            ->where('id', $request->main_cat);
+        $scategory = scategorie::all()
+            ->where('id', $request->sub_cat);
+        foreach($category as $ctg){
+            $ctgnm = $ctg['name']; 
+        }
+        foreach($scategory as $sctg){
+            $sctgnm = $sctg['name']; 
+        }
         if(Session('logedadminrole')==1){
             $newnm = $request->file('selfile')->store("File/".$ctgnm."/".$sctgnm);
             $file->newnm = $newnm;
             $file->save();            
-            return redirect::back()->withSuccess('File Updated');
+            Session::flash('Success', 'File Added');
+            return redirect::back();
         }else if(Session('logedadminrole')==2 or Session('logedadminrole')==3){
             if(Session('permissions')['file_edit']==1){
                 $newnm = $request->file('selfile')->store("File/".$ctgnm."/".$sctgnm);
                 $file->newnm = $newnm;
-                $file->save();                
-                return redirect::back()->withSuccess('File Updated');
+                $file->save();        
+                Session::flash('success', 'File Added');        
+                return redirect::back();
             }else{
-                return redirect::back()->withError('Sorry! You are not allowed to perform this action.');
+                Session::flash('Success', 'Sorry! You are not allowed to perform this action.');
+                return redirect::back();
             }
         }
         
@@ -167,20 +145,25 @@ class FileController extends Controller
         if(Session('logedadminrole')==1){
             $delitem = File::find($id);
             if($delitem->delete()){
-                return redirect::back()->withSuccess('File Deleted');
+                Session::flash('success', 'File Deleted');
+                return redirect::back();
             }else{
-                return redirect::back()->withError('File Delete Failed');
+                Session::flash('error', 'File Delete Failed');
+                return redirect::back();
             }
         }else if(Session('logedadminrole')==2 or Session('logedadminrole')==3){
             if(Session('permissions')['file_delete']==1){
                 $delitem = File::find($id);
                 if($delitem->delete()){
-                    return redirect::back()->withSuccess('File Deleted');
+                    Session::flash('success', 'File Deleted');
+                    return redirect::back();
                 }else{
-                    return redirect::back()->withError('File Delete Failed');
+                    Session::flash('error', 'File Delete Failed');
+                    return redirect::back();
                 }                
             }else{
-                return redirect::back()->withError('Sorry! You are not allowed to perform this action.');
+                Session::flash('error', 'Sorry! You are not allowed to perform this action.');
+                return redirect::back();
             }
         }
         

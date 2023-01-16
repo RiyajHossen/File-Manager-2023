@@ -20,6 +20,5 @@ class HomeController extends Controller
         $scategorie = scategorie::all()->count();
         $files = File::paginate(10);
         return view('admin/home', ['nfile'=>$cfile, 'sadmin'=>$sadmin, 'admin'=>$admin, 'manager'=>$manager, 'categorie'=>$categorie, 'scategorie'=>$scategorie, 'files'=>$files]);
-        // return view('admin/home');
     }
 }

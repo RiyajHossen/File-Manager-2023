@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Permission;
 use Illuminate\Support\Facades\DB;
 use Redirect;
+use Session;
 
 class PermissionController extends Controller
 {
@@ -103,9 +104,11 @@ class PermissionController extends Controller
                         ->where('id', 1)
                         ->update(['file_add' => $file_add_a, 'file_edit' => $file_edit_a, 'file_delete' => $file_delete_a, 'file_download' => $file_download_a, 'cat_add' => $category_add_a, 'cat_edit' => $category_edit_a, 'cat_delete' => $category_delete_a])
                 ) {
-                    return Redirect::back()->withScuccess("Permission Updated");
+                    Session::flash('success', 'Permission Updated');
+                    return Redirect::back();
                 } else {
-                    return redirect::back()->withError("Permission Update Failed");
+                    Session::flash('error', 'Permission Update Failed');
+                    return redirect::back();
                 }
             } else if ($req->submit == 'Manager') {
                 if (
@@ -113,9 +116,11 @@ class PermissionController extends Controller
                         ->where('id', 2)
                         ->update(['file_add' => $file_add_m, 'file_edit' => $file_edit_m, 'file_delete' => $file_delete_m, 'file_download' => $file_download_m, 'cat_add' => $category_add_m, 'cat_edit' => $category_edit_m, 'cat_delete' => $category_delete_m])
                 ) {
-                    return Redirect::back()->withScuccess("Permission Updated");
+                    Session::flash('success', 'Permission Updated');
+                    return Redirect::back();
                 } else {
-                    return redirect::back()->withError("Permission Update Failed");
+                    Session::flash('error', 'Permission Update Failed');
+                    return redirect::back();
                 }
             }
         }

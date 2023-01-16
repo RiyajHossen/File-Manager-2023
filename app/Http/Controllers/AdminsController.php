@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
+use Session;
 
 class AdminsController extends Controller
 {
@@ -28,9 +29,11 @@ class AdminsController extends Controller
         $nadmin->status = $req->acstatus;
         if (Session('logedadminrole') == 1) {
             $nadmin->save();
-            return redirect::back()->withSuccess('Admin Added');
+            Session::flash('success', 'Admin Added');
+            return redirect::back();
         }else{
-            return redirect::back()->withError('Sorry! You are not allowed to perform this action.');
+            Session::flash('error', 'Sorry! You are not allowed to perform this action.');
+            return redirect::back();
         }
     }
     public function adminDetails($id)
@@ -54,9 +57,11 @@ class AdminsController extends Controller
                         ->where('id', $req->adminid)
                         ->update(['name' => $req->fnm, 'email' => $req->aemail, 'password' => Hash::make($req->apassword), 'role' => $req->adrole, 'status' => $req->acstatus])
                 ) {
-                    return Redirect::back()->withSuccess('Information Updated');
-                } else {
-                    return Redirect::back()->withError('Somthing Wrong');
+                    Session::flash('success', 'Information Updated');
+                    return Redirect::back();
+                } else {                    
+                    Session::flash('error', 'Somthing Wrong');
+                    return Redirect::back();
                 }
             } else {
                 if (
@@ -64,13 +69,16 @@ class AdminsController extends Controller
                         ->where('id', $req->adminid)
                         ->update(['name' => $req->fnm, 'email' => $req->aemail, 'role' => $req->adrole, 'status' => $req->acstatus])
                 ) {
-                    return Redirect::back()->withSuccess('Information Updated');
+                    Session::flash('success', 'Information Updated');
+                    return Redirect::back();
                 } else {
-                    return Redirect::back()->withError('Somthing Wrong');
+                    Session::flash('error', 'Somthing Wrong');
+                    return Redirect::back();
                 }
             }
         }else{
-            return redirect::back()->withError('Sorry! You are not allowed to perform this action.');
+            Session::flash('error', 'Sorry! You are not allowed to perform this action.');
+            return redirect::back();
         }
     }
 }

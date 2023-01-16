@@ -39,10 +39,10 @@ class AuthController extends Controller
                 }
                 return redirect('home');
             }else{
-                return redirect::back()->withError('Worng Password');                
+                return redirect::back()->withError('Worng emamil or password');                
             }                        
         }else{
-            return redirect::back()->withError('Worng email');
+            return redirect::back()->withError('Worng email or password');
         }        
     }
     

@@ -105,5 +105,10 @@ class CategoryController extends Controller
             }
         }
     }
+    public function allctg()
+    {
+        $data = Categorie::all();
+        return view('admin/category/selctg', ['categories'=>$data]);
+    }
 
 }
