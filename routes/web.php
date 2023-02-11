@@ -64,7 +64,9 @@ Route::group(['middleware' => ['protectPage']], function () {
 });
 Route::get('/', function () {
     if(session()->has('logedadmin')){
-        Route::get('home', [HomeController::class, 'dashboard']);
+        Session::flush();
+        return back();
+        // Route::get('home', [HomeController::class, 'dashboard']);
     }else{
         return view('login');
     }
