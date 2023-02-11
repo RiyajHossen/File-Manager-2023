@@ -18,12 +18,12 @@
 <body>
     <div class="header">
         <div class="container">
-            <div class="row">
-                <div class="col-6 col-md-4 col-lg-3 d-flex align-items-center">
+            <div class="row py-2">
+                <div class="col-12 col-sm-4 col-md-4 col-lg-3 d-flex align-items-center logo">
                     <h3>My Website</h3>
                 </div>
-                <div class="col-6 col-md-8 col-lg-9 row justify-content-between">
-                    <div class="form-group w-75 m-0 d-flex align-items-center">
+                <div class="col-12 col-md-8 col-lg-9 row justify-content-between mx-auto">
+                    <div class="form-group searchfild w-75 m-0 d-flex align-items-center">
                         <div class="form-group m-0 w-100">
                             <form action="{{ url('results') }}" method="post" id="searchform">
                                 @csrf
@@ -33,7 +33,7 @@
                             </form>
                         </div>
                     </div>
-                    <div class="wlc_admin">
+                    <div class="wlc_admin w-25">
                         <button class="wadropbtn">
                             <i class="bi bi-person-fill" style="
                         font-size: 1.5rem;"></i>

@@ -139,9 +139,6 @@ body{
     border: 0;
     margin-bottom: 0;
     cursor: pointer;
-    position: absolute;
-    left: 0;
-    bottom: 0;
     background-color: #e1dce7;
     outline: none;
 }
@@ -153,6 +150,21 @@ body{
 
 #sidebar.hide #slide-nav i {
     transform: rotate(180deg);
+}
+@media (max-width:576px){
+    .logo, .wlc_admin{
+        display: none !important;
+    }
+    .searchfild{
+        width: 100% !important;
+    }
+    #content {
+        padding: 0 0.2rem;
+    }
+    .secdiv {
+        padding: 5px !important;
+        margin: 10px 0px !important;
+    }
 }
 /* /Side Bar Styling */
 /* Dashboard Designing */

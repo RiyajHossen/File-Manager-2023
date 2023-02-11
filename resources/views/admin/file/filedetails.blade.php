@@ -57,9 +57,9 @@
                     </table>
                     <br>
                         <a href="{{url('download/'.$file['id'])}}" class="btn btn-success">Download</a>
-                        <a href="{{ url()->previous() }}" class="btn btn-primary ml-3">Back</a>
-
-                @endforeach
+                        <a href="{{ URL::previous() }}" class="btn btn-primary ml-3">Back</a>                        
+                        {{-- <a href="{{ url()->previous() }}" class="btn btn-primary ml-3">Back</a>                         --}}
+                        @endforeach
             </div>     
         </div>
     </div>    
