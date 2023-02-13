@@ -8,22 +8,22 @@
             <div class="form-group mb-3">
                 <label for="adrole">Select Role:</label>
                 <select name="adrole" id="adrole" class="form-control">
-                    <option value="2">Admin</option>
                     <option value="1">Super Admin</option>
+                    <option value="2" selected>Admin</option>
                     <option value="3">Manager</option>
                 </select>
             </div> 
             <div class="form-group mb-3">
                 <label for="fnm">Full Name:</label>
-                <input type="text" id="fnm" name="fnm" class="form-control">
+                <input type="text" id="fnm" name="fnm" class="form-control" required>
             </div>        
             <div class="form-group mb-3">
                 <label for="aemail">Email:</label>
-                <input type="email" id="aemail" name="aemail" class="form-control">
+                <input type="email" id="aemail" name="aemail" class="form-control" required>
             </div>        
             <div class="form-group mb-3">
                 <label for="apassword">Set Password:</label>
-                <input type="text" id="apassword" name="apassword" class="form-control">
+                <input type="text" id="apassword" name="apassword" class="form-control" required>
             </div>        
             <div class="form-group mb-3">
                 <label for="acstatus">Account Status:</label>

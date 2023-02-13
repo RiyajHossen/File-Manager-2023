@@ -178,3 +178,6 @@ body{
     margin-top: 10px;
 }
 /* /Dashboard Designing */
+.fild_danger{
+    border: 1px solid red;
+}

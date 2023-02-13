@@ -24,11 +24,11 @@
             </div>
             <div class="form-group mb-3">
                 <label for="fnm">Full Name:</label>
-                <input type="text" id="fnm" name="fnm" class="form-control" value="{{$name}}">
+                <input type="text" id="fnm" name="fnm" class="form-control" value="{{$name}}" required>
             </div>        
             <div class="form-group mb-3">
                 <label for="aemail">Email:</label>
-                <input type="email" id="aemail" name="aemail" class="form-control" value="{{$email}}">
+                <input type="email" id="aemail" name="aemail" class="form-control" value="{{$email}}" required>
             </div>        
             <div class="form-group mb-3">
                 <label for="apassword">Set Password:</label>

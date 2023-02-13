@@ -61,6 +61,8 @@ Route::group(['middleware' => ['protectPage']], function () {
     Route::get("permission",[PermissionController::class, 'permissions']);    
     Route::post("uppermission",[PermissionController::class, 'upPermission']);    
     Route::get("results",[FileController::class, 'searchMcat']);
+    Route::post("uppass",[AdminsController::class, 'updatePassword']);    
+
 });
 Route::get('/', function () {
     if(session()->has('logedadmin')){

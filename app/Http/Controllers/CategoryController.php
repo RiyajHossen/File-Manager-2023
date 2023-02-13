@@ -13,9 +13,16 @@ class CategoryController extends Controller
 {
     public function store(Request $requset)
     {
+        $requset->validate([
+            'ctnm'=>'required'
+        ]);
+        $catdet=$requset->ctdesc;
+        if(strlen($catdet)<1){
+            $catdet="No description";
+        }
         $category = new categorie;
         $category->name = $requset->ctnm;
-        $category->description = $requset->ctdesc;
+        $category->description = $catdet;
         
         if(Session('logedadminrole')==1){
             if($category->save())
@@ -92,10 +99,17 @@ class CategoryController extends Controller
     }
     public function upcat(Request $req)
     {
+        $req->validate([
+            'ctnm'=>'required'
+        ]);
+        $catdet=$req->ctdesc;
+        if(strlen($catdet)<1){
+            $catdet="No description";
+        }
         if(Session('logedadminrole')==1){
             if(DB::table('categories')
             ->where('id', $req->catid)
-            ->update(['name' => $req->ctnm, 'description'=>$req->ctdesc]))
+            ->update(['name' => $req->ctnm, 'description'=>$catdet]))
             {
                 Session::flash('success', 'Categorie Updated');
                 return redirect::back();            
@@ -107,7 +121,7 @@ class CategoryController extends Controller
             if(Session('permissions')['cat_edit']==1){
                 if(DB::table('categories')
                 ->where('id', $req->catid)
-                ->update(['name' => $req->ctnm, 'description'=>$req->ctdesc]))
+                ->update(['name' => $req->ctnm, 'description'=>$catdet]))
                 {
                     Session::flash('success', 'Categorie Updated');
                     return redirect::back();            

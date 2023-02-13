@@ -18,6 +18,9 @@
         <div class="form-group">
             <label for="ctnm">Category Name</label>
             <input type="text" name="ctnm" id="ctnm" value="{{ $catname }}" class="form-control">
+            @error('ctnm')
+                    <p class="text-danger">{{$message}}</p>
+                @enderror
         </div>
         <div class="form-group">
             <label for="ctdesc">Category Description</label>

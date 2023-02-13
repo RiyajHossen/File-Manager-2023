@@ -15,7 +15,7 @@
             @csrf
             <div class="form-group">
                 <label for="mact">Select Main Category:</label>
-                <select name="mact" id="mact" class="form-control">
+                <select name="mact" id="mact" class="form-control" required>
                     @foreach ($mcategories as $mcat)
                         <option value="{{ $mcat['id'] }}">{{ $mcat['name'] }}</option>
                     @endforeach
@@ -23,10 +23,10 @@
             </div>
             <div class="form-group">
                 <label for="sctnm">Sub Category Name:</label>
-                <input type="text" name="sctnm" id="sctnm" class="form-control">
+                <input type="text" name="sctnm" id="sctnm" class="form-control" required>
             </div>
             <div class="form-group">
-                <label for="sctdesc">Category Description:</label>
+                <label for="sctdesc">Sub Category Description:</label>
                 <textarea id="sctdesc" name="sctdesc" class="form-control"></textarea>
             </div>
             <div class="form-group text-center">
@@ -40,8 +40,8 @@
                     <thead class="thead-dark">
                         <tr>
                             <th>#</th>
+                            <th>Main Category Name</th>
                             <th>Sub-Category Name</th>
-                            <th>Sub-Category Description</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -55,8 +55,8 @@
                         @foreach ($scategories as $scat)
                             <tr>
                                 <td>{{ $count++ }}</td>
+                                <td>@php $mcat=$scat['main_category']; echo $mcategories[$mcat]['name']; @endphp</td>
                                 <td>{{ $scat['name'] }}</td>
-                                <td>{{ $scat['description'] }}</td>
                                 <td><a href="editscat/{{ $scat['id'] }}">Edit</a> <a
                                         href="sub-category/delete/{{ $scat['id'] }}">Delete</a></td>
                             </tr>

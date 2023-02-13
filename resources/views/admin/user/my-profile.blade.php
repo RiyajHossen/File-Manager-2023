@@ -20,32 +20,32 @@
                 @csrf
                 <h5 class="mb-4 mt-5">Change Your Password:</h5> 
                 @if(Session::has('success'))
-                        <div class="alert alert-success">
+                        <div class="alert alert-success mt-2">
                             {{Session::get('success')}}
                         </div>
                     @endif 
                 <div class="form-group mb-3">
                     <label for="cpass">Current Password:</label>
-                    <input type="text" id="cpass" name="cpass" class="form-control">
+                    <input type="password" id="cpass" name="cpass" class="form-control" required>
                     @if(Session::has('fail'))
-                        <div class="alert alert-danger">
+                        <div class="alert alert-danger mt-2">
                             {{Session::get('fail')}}
                         </div>
                     @endif
                 </div>       
                 <div class="form-group mb-3">
                     <label for="npass">New Password:</label>
-                    <input type="text" id="npass" name="npass" class="form-control">
+                    <input type="password" id="npass" name="npass" class="form-control @error('cnpass') fild_danger @enderror" required>
                 </div>       
                 <div class="form-group mb-3">
                     <label for="cnpass">Confirm New Password:</label>
-                    <input type="text" id="cnpass" name="cnpass" class="form-control">
-                    @if(Session::has('mfail'))
-                        <div class="alert alert-danger">
-                            {{Session::get('mfail')}}
-                        </div>
-                    @endif
-                </div>       
+                    <input type="password" id="cnpass" name="cnpass" class="form-control @error('cnpass') fild_danger @enderror" required>
+                    @error('cnpass')
+                    <div class="alert alert-danger mt-2">
+                        {{$message}}
+                    </div>                        
+                    @enderror
+                </div>
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary">Update Password</button>
                     

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Validator;
 use Session;
 
 class AdminsController extends Controller
@@ -21,6 +22,11 @@ class AdminsController extends Controller
     }
     public function addadmin(Request $req)
     {
+        $req->validate([
+            'fnm'=>'required',
+            'aemail'=>'required|email',
+            'apassword'=>'required',
+        ]);
         $nadmin = new Admin;
         $nadmin->name = $req->fnm;
         $nadmin->email = $req->aemail;
@@ -50,6 +56,10 @@ class AdminsController extends Controller
     }
     public function up_admin(Request $req)
     {
+        $req->validate([
+            'fnm'=>'required',
+            'aemail'=>'required|email'
+        ]);
         if (Session('logedadminrole') == 1) {
             if ($req->apassword) {
                 if (
@@ -79,6 +89,31 @@ class AdminsController extends Controller
         }else{
             Session::flash('error', 'Sorry! You are not allowed to perform this action.');
             return redirect::back();
+        }
+    }
+    public function updatePassword(Request $request)
+    {
+        $request->validate([
+            // 'cpass'=>'required',
+            'npass'=>'required',
+            'cnpass'=>'required|same:npass',
+        ]);        
+        $fadmin = Admin::all()->where('id', session('logedadminid'));
+        if($fadmin){
+            foreach($fadmin as $admin){
+                $userpass = $admin['password'];
+            }
+            if(Hash::check($request->cpass, $userpass)){
+                if(DB::table('admins')
+                ->where('id', session('logedadminid'))
+                ->update(['password' => Hash::make($request->cnpass)])){
+                    Session::flash('success', 'Password Updated');
+                    return Redirect::back();
+                }
+            }else{
+                Session::flash('fail', 'Wrong Current Password');
+                return Redirect::back();
+            }
         }
     }
 }

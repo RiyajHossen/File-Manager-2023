@@ -16,7 +16,7 @@
         @endif
             <div class="form-group">
                 <label for="mact">Select Main Category:</label>
-                <select name="mact" id="mact" class="form-control">
+                <select name="mact" id="mact" class="form-control" required>
                     @foreach($mcategories as $mcat)
                     <option value="{{$mcat['id']}}" @php if($mcat['id']==$scatmcat){echo 'selected';} @endphp>{{$mcat['name']}}</option>
                     @endforeach
@@ -24,7 +24,7 @@
             </div>
             <div class="form-group">
                 <label for="sctnm">Sub Category Name:</label>
-                <input type="text" value="{{ $scatnm }}" name="sctnm" id="sctnm" class="form-control">
+                <input type="text" value="{{ $scatnm }}" name="sctnm" id="sctnm" class="form-control" required>
             </div>
             <div class="form-group">
                 <label for="sctdesc">Category Description:</label>

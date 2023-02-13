@@ -11,12 +11,20 @@ use Session;
 
 class ScategoryController extends Controller
 {
-    public function scatstore(Request $requset)
+    public function scatstore(Request $request)
     {
+        $request->validate([
+            'mact'=>'required',
+            'sctnm'=>'required'
+        ]);
+        $catdet=$request->sctdesc;
+        if(strlen($catdet)<1){
+            $catdet="No description";
+        }
         $scategory = new Scategorie;
-        $scategory->name = $requset->sctnm;
-        $scategory->description = $requset->sctdesc;
-        $scategory->main_category = $requset->mact;
+        $scategory->name = $request->sctnm;
+        $scategory->description = $catdet;
+        $scategory->main_category = $request->mact;
         
         if(Session('logedadminrole')==1){
             if($scategory->save()){
@@ -88,10 +96,18 @@ class ScategoryController extends Controller
     }
     public function upscat(Request $req)
     {
+        $req->validate([
+            'mact'=>'required',
+            'sctnm'=>'required'
+        ]);
+        $catdet=$req->sctdesc;
+        if(strlen($catdet)<1){
+            $catdet="No description";
+        }
         if(Session('logedadminrole')==1){
             if(DB::table('scategories')
             ->where('id', $req->scatid)
-            ->update(['name' => $req->sctnm, 'description'=>$req->sctdesc, 'main_category'=>$req->mact]))
+            ->update(['name' => $req->sctnm, 'description'=>$catdet, 'main_category'=>$req->mact]))
             {
                 Session::flash('success', 'Sub Categorie Information Updated');
               return redirect::back();
@@ -103,7 +119,7 @@ class ScategoryController extends Controller
             if(Session('permissions')['cat_edit']==1){
                 if(DB::table('scategories')
                 ->where('id', $req->scatid)
-                ->update(['name' => $req->sctnm, 'description'=>$req->sctdesc, 'main_category'=>$req->mact]))
+                ->update(['name' => $req->sctnm, 'description'=>$catdet, 'main_category'=>$req->mact]))
                 {
                     Session::flash('success', 'Sub Categorie Information Updated');
                   return redirect::back();

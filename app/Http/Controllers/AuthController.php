@@ -7,13 +7,17 @@ use App\Models\Admin;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 use App\Models\Permission;
+use Illuminate\Support\Facades\Validator;
 
 
 class AuthController extends Controller
 {
     public function adlogin(Request $req)
     {
-       
+       $req->validate([
+        'email'=>'required|email',
+        'password'=>'required'
+       ]);
         $fadmin = Admin::all()->where('email', $req->email);
         if($fadmin){
             foreach($fadmin as $admin){
