@@ -18,7 +18,9 @@ class HomeController extends Controller
         $manager = Admin::all()->where('role', 3)->count();
         $categorie = Categorie::all()->count();
         $scategorie = scategorie::all()->count();
-        $files = File::paginate(10);
+        $files = File::paginate(10);   
+        $homeurl = url()->current();
+        session()->put('home_url', $homeurl);     
         return view('admin/home', ['nfile'=>$cfile, 'sadmin'=>$sadmin, 'admin'=>$admin, 'manager'=>$manager, 'categorie'=>$categorie, 'scategorie'=>$scategorie, 'files'=>$files]);
     }
 }

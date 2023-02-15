@@ -86,14 +86,14 @@
 
 @section('script')
     <script>
-        var currentUrl = window.location.origin;
+        var mainUrl = "{{session('home_url')}}".split('home')[0];
         $('#cctg').on('change', function() {
             var categoryID = $(this).val();
             if (categoryID) {
                 if (categoryID == 0) {
-                    window.location.replace(currentUrl + "/file/");
+                    window.location.replace(mainUrl + "/file/");
                 } else {
-                    window.location.replace(currentUrl + "/file/" + categoryID);
+                    window.location.replace(mainUrl + "/file/" + categoryID);
                 }
             }
         });
@@ -102,9 +102,9 @@
             var subCtg = $(this).val();
             if (subCtg) {
                 if (subCtg == 0) {
-                    window.location.replace(currentUrl + "/file/" + mainCtg);
+                    window.location.replace(mainUrl + "/file/" + mainCtg);
                 } else {
-                    window.location.replace(currentUrl + "/file/" + mainCtg + "/" + subCtg);
+                    window.location.replace(mainUrl + "/file/" + mainCtg + "/" + subCtg);
                 }
             }
         });

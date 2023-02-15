@@ -163,7 +163,14 @@ class FileController extends Controller
     public function getmcat()
     {
         $allcat = Categorie::all();
-        return view('admin/file/fileup', ['mainctgs' => $allcat]);
+        return view('admin/file/fileup', ['mcats' => $allcat]);
+    }
+    public function fileupScat($mcat)
+    {
+        $allcat = Categorie::all();
+        $allscat = Scategorie::all()->where('main_category', $mcat);
+        $scats = Scategorie::all()->where('main_category', $mcat);
+        return view('admin/file/fileup', ['mcats' => $allcat, 'mcat'=>$mcat, 'scats'=>$scats]);
     }
     public function delete($id)
     {

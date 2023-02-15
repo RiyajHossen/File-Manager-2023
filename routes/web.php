@@ -48,6 +48,7 @@ Route::group(['middleware' => ['protectPage']], function () {
     Route::post("update_file",[FileController::class, 'updateFile']);
     Route::get("download/{fileid}",[FileController::class, 'download']);
     Route::get("fileup",[FileController::class, 'getmcat']);
+    Route::get("fileup/{mcat}",[FileController::class, 'fileupScat']);
     Route::post("fileupload",[FileController::class, 'fileupload']);  
     Route::get('getmaincat/{id}', function ($id) {
         $sub_cat = App\Models\Scategorie::where('main_category',$id)->get();

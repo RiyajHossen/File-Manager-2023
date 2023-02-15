@@ -5,24 +5,32 @@
             
             @csrf
             <div class="row">
-                <div class="col-12 col-md-6">
-                    <div class="form-group mb-3">
-                        <label for="main_cat">Main Category:</label>
-                        <select name="main_cat" id="main_cat" class="form-control" required>
-                            <option value="">Select Category</option>
-                            @foreach($mainctgs as $mainctg)
-                            <option value="{{$mainctg['id']}}">{{$mainctg['name']}}</option>
+                <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                        <label for="cctg">Choose a Category:</label>
+                        <select name="cctg" id="cctg" class="form-control">
+                            <option value="" hidden>Choose Category</option>
+                            @foreach ($mcats as $mctg)
+                                <option value="{{ $mctg['id'] }}"
+                                    @php if(isset($mcat)){if($mcat==$mctg['id']){ echo 'selected';} } @endphp>
+                                    {{ $mctg['name'] }}</option>
                             @endforeach
                         </select>
-                    </div>  
+                    </div>
                 </div>
-                <div class="col-12 col-md-6">
-                    <div class="form-group mb-3">
-                        <label for="sub_cat">Sub Category:</label>
-                        <select name="sub_cat" id="sub_cat" class="form-control" required>
-                            <option value="">Select Sub Category</option>
+                <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                        <label for="csctg">Choose Sub Category:</label>
+                        <select name="csctg" id="csctg" class="form-control">
+                            @isset($scats)
+                                @foreach ($scats as $sctg)
+                                    <option value="{{ $sctg['id'] }}"
+                                        @php if(isset($scat)){if($scat==$sctg['id']){ echo 'selected';} } @endphp>
+                                        {{ $sctg['name'] }}</option>
+                                @endforeach
+                            @endisset
                         </select>
-                    </div>  
+                    </div>
                 </div>
             </div>
             <div class="form-group mb-3">
@@ -54,33 +62,13 @@
     </div>    
 @endsection
 @section('script')
-<script>
-    $(document).ready(function() {
-    $('#main_cat').on('change', function() {
-       var categoryID = $(this).val();
-       if(categoryID) {
-           $.ajax({
-               url: '/getmaincat/'+categoryID,
-               type: "GET",
-               data : {"_token":"{{ csrf_token() }}"},
-               dataType: "json",
-               success:function(data)
-               {
-                 if(data){
-                    $('#sub_cat').empty();
-                    $('#sub_cat').append('<option hidden value="">Sub Category</option>'); 
-                    $.each(data, function(id, sub_cat){
-                        $('select[name="sub_cat"]').append('<option value="'+ sub_cat.id +'">' + sub_cat.name+ '</option>');
-                    });
-                }else{
-                    $('#sub_cat').empty();
-                }
-             }
-           });
-       }else{
-         $('#sub_cat').empty();
-       }
-    });
-    });
-</script>
+    <script>
+        var mainUrl = "{{session('home_url')}}".split('home')[0];
+        $('#cctg').on('change', function() {
+            var categoryID = $(this).val();
+            if (categoryID) {
+                window.location.replace(mainUrl + "/fileup/" + categoryID);                
+            }
+        });
+    </script>
 @endsection
