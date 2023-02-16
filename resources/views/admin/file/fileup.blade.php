@@ -1,14 +1,14 @@
 @extends("../layouts.app")
 @section('content')
     <div id="content">
-        <form action="fileupload" method="post" enctype="multipart/form-data" class="secdiv">
+        <form action="{{ url('fileupload')}}" method="post" enctype="multipart/form-data" class="secdiv">
             
             @csrf
             <div class="row">
                 <div class="col-12 col-sm-6">
                     <div class="form-group">
                         <label for="cctg">Choose a Category:</label>
-                        <select name="cctg" id="cctg" class="form-control">
+                        <select name="main_cat" id="cctg" class="form-control">
                             <option value="" hidden>Choose Category</option>
                             @foreach ($mcats as $mctg)
                                 <option value="{{ $mctg['id'] }}"
@@ -21,7 +21,7 @@
                 <div class="col-12 col-sm-6">
                     <div class="form-group">
                         <label for="csctg">Choose Sub Category:</label>
-                        <select name="csctg" id="csctg" class="form-control">
+                        <select name="sub_cat" id="csctg" class="form-control">
                             @isset($scats)
                                 @foreach ($scats as $sctg)
                                     <option value="{{ $sctg['id'] }}"
@@ -63,7 +63,7 @@
 @endsection
 @section('script')
     <script>
-        var mainUrl = "{{session('home_url')}}".split('home')[0];
+        var mainUrl = "{{session('home_url')}}".split('/home')[0];
         $('#cctg').on('change', function() {
             var categoryID = $(this).val();
             if (categoryID) {
